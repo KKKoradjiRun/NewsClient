@@ -6,12 +6,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.tomas.snowfat.newsclient.app.Constant;
 import com.tomas.snowfat.newsclient.bean.CategoryBean;
+import com.tomas.snowfat.newsclient.network.NetWorkListener;
 import com.tomas.snowfat.newsclient.network.NewsClientRequest;
 
 /**
@@ -69,19 +69,20 @@ public class NewsCenterTabPage extends BaseTabPage {
     @Override
     public void loadServer() {
         super.loadServer();
-        String url = "http://10.0.3.2:8080/zhbj/categories.json";
+        String url = Constant.HOME_URL+"categories.json";
 
 
 
-        NewsClientRequest<CategoryBean> request =
-                new NewsClientRequest<CategoryBean>(Request.Method.GET,url,CategoryBean.class,null, listener, errorListener);
+       /* NewsClientRequest<CategoryBean> request =
+                new NewsClientRequest<CategoryBean>(Request.Method.GET,url,CategoryBean.class,null, listener, errorListener);*/
+        NewsClientRequest<CategoryBean> request = new NewsClientRequest<CategoryBean>(url,listener,CategoryBean.class);
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
         queue.add(request);
 
         
     }
-    private Response.Listener listener = new Response.Listener<CategoryBean>() {
+    /*private Response.Listener listener = new Response.Listener<CategoryBean>() {
         @Override
         public void onResponse(CategoryBean response) {
             Toast.makeText(getContext(), "网络成功", Toast.LENGTH_SHORT).show();
@@ -94,6 +95,22 @@ public class NewsCenterTabPage extends BaseTabPage {
         @Override
         public void onErrorResponse(VolleyError error) {
             Toast.makeText(getContext(),"网络失败",Toast.LENGTH_SHORT).show();
+        }
+    };*/
+    private NetWorkListener<CategoryBean> listener = new NetWorkListener<CategoryBean>(){
+        @Override
+        public void onResponse(CategoryBean response) {
+            super.onResponse(response);
+            Toast.makeText(getContext(),"网络连接成功",Toast.LENGTH_SHORT).show();
+            mCategoryBean = response;
+            onMenuSwitch(0);
+
+        }
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            super.onErrorResponse(error);
+            Toast.makeText(getContext(),"网络连接失败", Toast.LENGTH_SHORT).show();
         }
     };
 }

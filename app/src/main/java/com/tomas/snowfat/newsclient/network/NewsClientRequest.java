@@ -17,11 +17,10 @@ public class NewsClientRequest<T> extends JsonRequest<T> {
     private Gson mGson = new Gson();
     private Class<T> mClass;
 
-    public NewsClientRequest(int method, String url,Class<T> clzz, String requestBody,
-                             Response.Listener listener, Response.ErrorListener errorListener) {
-        super(method, url, requestBody, listener, errorListener);
+    public NewsClientRequest(String url,
+                             NetWorkListener<T> listener, Class<T> clzz) {
+        super(Method.GET, url, null, listener, listener);
         mClass = clzz;
-
     }
 
     @Override
