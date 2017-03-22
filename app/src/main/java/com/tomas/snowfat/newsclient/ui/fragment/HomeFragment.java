@@ -55,6 +55,7 @@ public class HomeFragment extends BaseFragment {
             if(mOnHomeChangeListener != null){
                 mOnHomeChangeListener.onTabChange(checkedId);
             }
+            tabPage.loadServer();
 
         }
     };
@@ -95,6 +96,7 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
+
 
         return tabPage;
 

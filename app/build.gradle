@@ -33,4 +33,5 @@ dependencies {
     compile 'com.github.open-android:PullToRefresh:v1.0'
     compile project(':loopviewpagerlib')
     compile 'com.android.volley:volley:1.0.0'
+    compile 'com.google.code.gson:gson:2.8.0'
 }

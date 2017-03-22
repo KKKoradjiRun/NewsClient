@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.tomas.snowfat.newsclient.R;
+import com.tomas.snowfat.newsclient.bean.CategoryBean;
 import com.viewpagerindicator.TabPageIndicator;
 
 import butterknife.BindView;
@@ -23,9 +24,11 @@ public class NewsPage extends RelativeLayout {
     TabPageIndicator mIndicator;
     @BindView(R.id.pager)
     ViewPager mPager;
+
     private static final String[] CONTENT
             = new String[]{"Recent", "Artists", "Albums", "Songs", "Playlists", "Genres", "Itheima", "HelloKitty"};
 
+    private CategoryBean.DataBean mData;
     public NewsPage(Context context) {
         this(context, null);
     }
@@ -48,7 +51,10 @@ public class NewsPage extends RelativeLayout {
     private PagerAdapter adapter = new PagerAdapter() {
         @Override
         public int getCount() {
-            return CONTENT.length;
+            if(mData == null){
+                return 0;
+            }
+            return mData.getChildren().size();
         }
 
         @Override
@@ -77,7 +83,14 @@ public class NewsPage extends RelativeLayout {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return CONTENT[position];
+
+            return mData.getChildren().get(position).getTitle();
         }
     };
+
+    public void setData(CategoryBean.DataBean data) {
+        mData = data;
+        mIndicator.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
+    }
 }
